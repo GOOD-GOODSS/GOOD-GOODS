@@ -1,2 +1,297 @@
-HTML
-<h1>안녕하세요! 내 첫 홈페이지입니다.</h1>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GOOD GOODS</title>
+  <style>
+    :root {
+      --bg-green: #1a5c28;
+      --bg-pattern: #227b36;
+      --text-pink: #ffbbf0;
+      --border-dark: #0f3818;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Arial Black', Impact, sans-serif;
+      /* 그린 하프톤 텍스처 패턴 재현 */
+      background-color: var(--bg-green);
+      background-image: 
+        radial-gradient(var(--bg-pattern) 15%, transparent 16%),
+        radial-gradient(var(--bg-pattern) 15%, transparent 16%);
+      background-size: 8px 8px;
+      background-position: 0 0, 4px 4px;
+      position: relative;
+    }
+
+    /* 상단 헤더 영역 */
+    header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      z-index: 100;
+    }
+
+    .nav-btn {
+      color: #ffffff;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      cursor: pointer;
+      text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+    }
+
+    .logo {
+      color: #ffffff;
+      font-size: 1.4rem;
+      line-height: 1.0;
+      text-align: center;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-shadow: 2px 2px 0px rgba(0,0,0,0.7);
+    }
+
+    /* 자유 배치 영역 */
+    #canvas-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    /* 캐릭터 스티커 아이템 */
+    .draggable-item {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: grab;
+      touch-action: none;
+      transition: transform 0.1s ease;
+      z-index: 10;
+    }
+
+    .draggable-item:active {
+      cursor: grabbing;
+      transform: scale(1.05);
+      z-index: 90 !important;
+    }
+
+    /* 캐릭터 누끼 이미지 스타일 */
+    .character-img {
+      width: 110px;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.4));
+      pointer-events: none;
+    }
+
+    /* 캐릭터 하단 라벨 박스 */
+    .label-box {
+      margin-top: 6px;
+      background-color: var(--border-dark);
+      border: 2px solid var(--text-pink);
+      border-radius: 8px;
+      padding: 4px 10px;
+      box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.5);
+      pointer-events: none;
+    }
+
+    .label-text {
+      color: #ffffff;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      font-weight: bold;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* 카테고리 팝업 모달 */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-card {
+      background: #111;
+      border: 3px solid var(--text-pink);
+      border-radius: 16px;
+      padding: 24px;
+      width: 85%;
+      max-width: 320px;
+      text-align: center;
+      color: white;
+      box-shadow: 8px 8px 0px rgba(0,0,0,0.8);
+    }
+
+    .modal-title {
+      font-size: 1.4rem;
+      color: var(--text-pink);
+      margin-bottom: 12px;
+    }
+
+    .close-btn {
+      margin-top: 16px;
+      background: var(--text-pink);
+      color: #000;
+      border: none;
+      padding: 8px 20px;
+      font-weight: bold;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-btn">MENU</div>
+    <div class="logo">GOOD<br>GOODS</div>
+    <div class="nav-btn">CART <span id="cart-count">0</span></div>
+  </header>
+
+  <main id="canvas-container"></main>
+
+  <!-- 클릭 시 나타나는 카테고리 팝업 -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-card">
+      <h2 class="modal-title" id="modal-category-name">CATEGORY</h2>
+      <p style="font-size: 0.9rem; color: #ccc; font-weight: normal; margin-bottom: 15px;">
+        해당 카테고리의 상품 페이지로 이동합니다.
+      </p>
+      <button class="close-btn" onclick="closeModal()">닫기</button>
+    </div>
+  </div>
+
+  <script>
+    /* ========================================================
+       [캐릭터 이미지 및 라벨 문구 수정하는 곳]
+       - title: 라벨에 표시될 문구
+       - imgSrc: images 폴더 안의 이미지 파일 경로 (예: 'images/char1.png')
+       - x, y: 처음 배치될 위치 (화면 기준 비율 %)
+    ======================================================== */
+    const ITEM_DATA = [
+      { id: 1, title: 'STANDARD BOY',  imgSrc: 'images/char1.png', x: 20, y: 70 },
+      { id: 2, title: 'DOUBLE BOY',    imgSrc: 'images/char2.png', x: 60, y: 75 },
+      { id: 3, title: 'GREEN ARMY',    imgSrc: 'images/char3.png', x: 15, y: 20 },
+      { id: 4, title: 'MARVEL & DC',   imgSrc: 'images/char4.png', x: 55, y: 18 },
+      { id: 5, title: 'WWE & WWF',     imgSrc: 'images/char5.png', x: 12, y: 42 },
+      { id: 6, title: 'DIGIMON',       imgSrc: 'images/char6.png', x: 50, y: 38 },
+      { id: 7, title: 'POKEMON',       imgSrc: 'images/char7.png', x: 52, y: 53 },
+      { id: 8, title: 'LIL HOMIES',    imgSrc: 'images/char8.png', x: 25, y: 55 }
+    ];
+
+    const container = document.getElementById('canvas-container');
+    let highestZIndex = 10;
+
+    // 캐릭터 생성 및 화면 배치
+    ITEM_DATA.forEach(data => {
+      const item = document.createElement('div');
+      item.className = 'draggable-item';
+      
+      const posX = (window.innerWidth * data.x) / 100;
+      const posY = (window.innerHeight * data.y) / 100;
+      item.style.left = `${posX}px`;
+      item.style.top = `${posY}px`;
+
+      item.innerHTML = `
+        <img class="character-img" src="${data.imgSrc}" alt="${data.title}" />
+        <div class="label-box">
+          <span class="label-text">${data.title}</span>
+        </div>
+      `;
+
+      makeDraggableAndClickable(item, data.title);
+      container.appendChild(item);
+    });
+
+    // 드래그 & 클릭 구분 로직
+    function makeDraggableAndClickable(element, title) {
+      let isDragging = false;
+      let startX, startY;
+      let initialLeft, initialTop;
+      let hasMoved = false;
+
+      function onStart(e) {
+        isDragging = true;
+        hasMoved = false;
+        
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+        startX = clientX;
+        startY = clientY;
+
+        initialLeft = element.offsetLeft;
+        initialTop = element.offsetTop;
+
+        highestZIndex++;
+        element.style.zIndex = highestZIndex;
+      }
+
+      function onMove(e) {
+        if (!isDragging) return;
+
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+        const deltaX = clientX - startX;
+        const deltaY = clientY - startY;
+
+        if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+          hasMoved = true;
+        }
+
+        element.style.left = `${initialLeft + deltaX}px`;
+        element.style.top = `${initialTop + deltaY}px`;
+      }
+
+      function onEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+
+        if (!hasMoved) {
+          openModal(title);
+        }
+      }
+
+      element.addEventListener('mousedown', onStart);
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup', onEnd);
+
+      element.addEventListener('touchstart', onStart, { passive: true });
+      window.addEventListener('touchmove', onMove, { passive: true });
+      window.addEventListener('touchend', onEnd);
+    }
+
+    function openModal(categoryTitle) {
+      document.getElementById('modal-category-name').innerText = categoryTitle;
+      document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
