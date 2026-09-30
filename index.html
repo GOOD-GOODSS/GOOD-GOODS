@@ -94,14 +94,14 @@
       pointer-events: none;
     }
 
-    /* 2번 레트로 스타일 라벨 박스 (노란색 바탕 + 검은 테두리 & 입체 그림자) */
+    /* 레트로 코믹스 스타일 노란 라벨 박스 */
     .label-box {
       margin-top: 6px;
       background-color: var(--label-yellow);
       border: 2px solid var(--text-black);
       border-radius: 4px;
       padding: 3px 12px;
-      transform: rotate(-3deg); /* 2번 이미지 특유의 살짝 기울어진 레트로 느낌 */
+      transform: rotate(-3deg);
       box-shadow: 3px 3px 0px #000000;
       pointer-events: none;
     }
@@ -181,29 +181,45 @@
 
   <script>
     /* ========================================================
-       [업로드하신 3개 이미지 및 카테고리 명칭 설정]
+       [새로 올릴 1, 2, 3, 4, 5 이미지 파일 설정]
+       - title: 각 카테고리 문구 (자유롭게 수정 가능)
+       - imgSrc: ./images/1.png 형태
     ======================================================== */
     const ITEM_DATA = [
       { 
         id: 1, 
         title: 'CATEGORY 01',  
-        imgSrc: './images/KakaoTalk_20260930_101800105_02.png', 
-        x: 25, 
-        y: 35 
+        imgSrc: './images/1.png', 
+        x: 20, 
+        y: 25 
       },
       { 
         id: 2, 
         title: 'CATEGORY 02',    
-        imgSrc: './images/KakaoTalk_20260930_102345515.png', 
+        imgSrc: './images/2.png', 
         x: 65, 
-        y: 40 
+        y: 20 
       },
       { 
         id: 3, 
         title: 'CATEGORY 03',    
-        imgSrc: './images/KakaoTalk_20260930_102549226.png', 
+        imgSrc: './images/3.png', 
         x: 42, 
+        y: 45 
+      },
+      { 
+        id: 4, 
+        title: 'CATEGORY 04',    
+        imgSrc: './images/4.png', 
+        x: 18, 
         y: 65 
+      },
+      { 
+        id: 5, 
+        title: 'CATEGORY 05',    
+        imgSrc: './images/5.png', 
+        x: 68, 
+        y: 62 
       }
     ];
 
