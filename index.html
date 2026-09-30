@@ -19,7 +19,6 @@
       -webkit-user-drag: none;
     }
 
-    /* GitHub Pages용 상대 경로 지정 */
     body {
       width: 100vw;
       height: 100vh;
@@ -92,7 +91,7 @@
 
     /* 캐릭터 누끼 이미지 스타일 */
     .character-img {
-      width: 110px;
+      width: 120px;
       height: auto;
       object-fit: contain;
       filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.4));
@@ -183,20 +182,31 @@
 
   <script>
     /* ========================================================
-       [캐릭터 이미지 및 라벨 문구 수정하는 곳]
-       - title: 라벨에 표시될 문구
-       - imgSrc: images 폴더 안의 이미지 파일 경로
-       - x, y: 처음 배치될 위치 (화면 기준 비율 %)
+       [업로드하신 3개 카카오톡 이미지 경로 적용]
+       - imgSrc: images/파일명.png
     ======================================================== */
     const ITEM_DATA = [
-      { id: 1, title: 'STANDARD BOY',  imgSrc: './images/char1.png', x: 20, y: 70 },
-      { id: 2, title: 'DOUBLE BOY',    imgSrc: './images/char2.png', x: 60, y: 75 },
-      { id: 3, title: 'GREEN ARMY',    imgSrc: './images/char3.png', x: 15, y: 20 },
-      { id: 4, title: 'MARVEL & DC',   imgSrc: './images/char4.png', x: 55, y: 18 },
-      { id: 5, title: 'WWE & WWF',     imgSrc: './images/char5.png', x: 12, y: 42 },
-      { id: 6, title: 'DIGIMON',       imgSrc: './images/char6.png', x: 50, y: 38 },
-      { id: 7, title: 'POKEMON',       imgSrc: './images/char7.png', x: 52, y: 53 },
-      { id: 8, title: 'LIL HOMIES',    imgSrc: './images/char8.png', x: 25, y: 55 }
+      { 
+        id: 1, 
+        title: 'CATEGORY 01',  
+        imgSrc: './images/KakaoTalk_20260930_101800105_02.png', 
+        x: 25, 
+        y: 35 
+      },
+      { 
+        id: 2, 
+        title: 'CATEGORY 02',    
+        imgSrc: './images/KakaoTalk_20260930_102345515.png', 
+        x: 65, 
+        y: 40 
+      },
+      { 
+        id: 3, 
+        title: 'CATEGORY 03',    
+        imgSrc: './images/KakaoTalk_20260930_102549226.png', 
+        x: 42, 
+        y: 65 
+      }
     ];
 
     const container = document.getElementById('canvas-container');
