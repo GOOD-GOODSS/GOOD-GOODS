@@ -5,18 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GOOD GOODS</title>
   <style>
-    body {
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-      font-family: 'Arial Black', Impact, sans-serif;
-      /* 고화질 배경 이미지 적용 */
-      background-image: url('images/bg.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      position: relative;
-    }
     :root {
       --bg-green: #1a5c28;
       --bg-pattern: #227b36;
@@ -32,18 +20,17 @@
       -webkit-user-drag: none;
     }
 
+    /* body 중복을 하나로 통합 및 배경 이미지 지정 */
     body {
       width: 100vw;
       height: 100vh;
       overflow: hidden;
       font-family: 'Arial Black', Impact, sans-serif;
-      /* 그린 하프톤 텍스처 패턴 재현 */
-      background-color: var(--bg-green);
-      background-image: 
-        radial-gradient(var(--bg-pattern) 15%, transparent 16%),
-        radial-gradient(var(--bg-pattern) 15%, transparent 16%);
-      background-size: 8px 8px;
-      background-position: 0 0, 4px 4px;
+      background-image: url('./images/bg.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: var(--bg-green); /* 이미지 로딩 전 기본 배경색 */
       position: relative;
     }
 
@@ -199,7 +186,7 @@
     /* ========================================================
        [캐릭터 이미지 및 라벨 문구 수정하는 곳]
        - title: 라벨에 표시될 문구
-       - imgSrc: images 폴더 안의 이미지 파일 경로 (예: 'images/char1.png')
+       - imgSrc: images 폴더 안의 이미지 파일 경로
        - x, y: 처음 배치될 위치 (화면 기준 비율 %)
     ======================================================== */
     const ITEM_DATA = [
