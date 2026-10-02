@@ -3,125 +3,224 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GOOD GOODS</title>
-  <style>
-    :root {
-      --bg-blue: #2455A0;
-      --label-yellow: #ffee00;
-      --text-black: #000000;
-    }
+  <title>GOOD GOODS - Neopets Style</title>
+  <!-- 네오펫 느낌의 통통한 레트로 웹폰트 불러오기 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=VT323&display=swap" rel="stylesheet">
 
+  <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      user-select: none;
-      -webkit-user-drag: none;
     }
 
     body {
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-      font-family: 'Arial Black', Impact, sans-serif;
-      background-color: var(--bg-blue);
-      position: relative;
-    }
-
-    /* 상단 헤더 영역 */
-    header {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 70px;
+      font-family: 'Comic Sans MS', 'Trebuchet MS', sans-serif;
+      background-color: #ffffff;
+      color: #000000;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 20px;
-      z-index: 100;
+      min-height: 100vh;
     }
 
-    .nav-btn {
-      color: #ffffff;
-      font-size: 1rem;
-      letter-spacing: 1px;
-      cursor: pointer;
-      text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+    /* =========================================
+       1. 네오펫 스타일 노란색 왼쪽 사이드바
+    ========================================= */
+    #sidebar {
+      width: 170px;
+      min-width: 170px;
+      background-color: #ffd700;
+      border-right: 2px solid #000000;
+      padding: 10px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
-    .logo {
-      color: #ffffff;
+    .sidebar-header {
+      font-family: 'VT323', monospace;
       font-size: 1.4rem;
-      line-height: 1.0;
+      font-weight: bold;
       text-align: center;
-      font-weight: 900;
+      border-bottom: 2px dashed #000;
+      padding-bottom: 6px;
       letter-spacing: 1px;
-      text-shadow: 2px 2px 0px rgba(0,0,0,0.7);
     }
 
-    /* 자유 배치 영역 */
-    #canvas-container {
-      width: 100%;
-      height: 100%;
+    .sidebar-menu {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sidebar-menu li {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 4px;
+      transition: background 0.1s;
+    }
+
+    .sidebar-menu li:hover {
+      background-color: #ffae00;
+      text-decoration: underline;
+    }
+
+    .menu-icon {
+      font-size: 1.1rem;
+    }
+
+    .sidebar-box {
+      margin-top: 15px;
+      background-color: #fff8bf;
+      border: 1px solid #000;
+      padding: 8px;
+      font-size: 0.75rem;
+      line-height: 1.3;
+    }
+
+    .sidebar-box h4 {
+      margin-bottom: 4px;
+      color: #cc0000;
+    }
+
+    /* =========================================
+       2. 오른쪽 메인 화면 영역
+    ========================================= */
+    #main-content {
+      flex: 1;
+      padding: 20px 30px;
+      background-color: #fffffa;
+      overflow-y: auto;
+    }
+
+    /* 네오펫 스타일 상단 타이틀 로고 */
+    .logo-container {
+      text-align: center;
+      margin-bottom: 25px;
       position: relative;
     }
 
-    /* 캐릭터 스티커 아이템 */
-    .draggable-item {
-      position: absolute;
+    .neopets-logo {
+      font-family: 'Fredoka', cursive;
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #000000;
+      text-shadow: 3px 3px 0px #ffd700, 5px 5px 0px #000000;
+      letter-spacing: 1px;
+      display: inline-block;
+      line-height: 1;
+    }
+
+    .star-decor {
+      color: #ffcc00;
+      font-size: 2rem;
+      vertical-align: super;
+      text-shadow: 2px 2px 0px #000;
+    }
+
+    .welcome-text {
+      font-size: 0.9rem;
+      color: #333;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    /* =========================================
+       3. 상품 2열 그리드 (상품 추가 시 무한 늘어남)
+    ========================================= */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* 무조건 2열 배치 */
+      gap: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* 레트로 카드 스타일 */
+    .product-card {
+      background-color: #ffffff;
+      border: 2px solid #000000;
+      border-radius: 8px;
+      padding: 15px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      cursor: grab;
-      touch-action: none;
-      transition: transform 0.1s ease;
-      z-index: 10;
+      box-shadow: 4px 4px 0px #000000;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      cursor: pointer;
     }
 
-    .draggable-item:active {
-      cursor: grabbing;
-      transform: scale(1.05) rotate(-2deg);
-      z-index: 90 !important;
+    .product-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px #000000;
+      background-color: #fffde6;
     }
 
-    /* 캐릭터 누끼 이미지 스타일 */
-    .character-img {
-      width: 120px;
-      height: auto;
+    .product-img-wrapper {
+      width: 100%;
+      height: 160px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f9f9f9;
+      border: 1px dashed #ccc;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .product-img {
+      max-width: 90%;
+      max-height: 90%;
       object-fit: contain;
-      filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.4));
-      pointer-events: none;
     }
 
-    /* 레트로 코믹스 스타일 노란 라벨 박스 */
-    .label-box {
-      margin-top: 6px;
-      background-color: var(--label-yellow);
-      border: 2px solid var(--text-black);
-      border-radius: 4px;
-      padding: 3px 12px;
-      transform: rotate(-3deg);
-      box-shadow: 3px 3px 0px #000000;
-      pointer-events: none;
+    .product-title {
+      font-family: 'Fredoka', cursive;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #000000;
+      margin-bottom: 6px;
+      text-align: center;
     }
 
-    .label-text {
-      color: var(--text-black);
-      font-family: 'Arial Black', Impact, sans-serif;
+    .product-price {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: #cc0000;
+      margin-bottom: 8px;
+    }
+
+    .buy-btn {
+      background-color: #ffd700;
+      border: 1.5px solid #000;
+      padding: 6px 16px;
+      font-family: 'Fredoka', cursive;
       font-size: 0.85rem;
-      font-weight: 900;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      white-space: nowrap;
-      text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.6);
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 2px 2px 0px #000;
     }
 
-    /* 카테고리 팝업 모달 */
+    .buy-btn:hover {
+      background-color: #ffae00;
+    }
+
+    /* =========================================
+       4. 상품 클릭 시 상세 모달
+    ========================================= */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.5);
       display: none;
       justify-content: center;
       align-items: center;
@@ -129,185 +228,183 @@
     }
 
     .modal-card {
-      background: #111;
-      border: 3px solid var(--label-yellow);
-      border-radius: 16px;
+      background: #ffffff;
+      border: 3px solid #000;
+      border-radius: 12px;
       padding: 24px;
-      width: 85%;
-      max-width: 320px;
+      width: 90%;
+      max-width: 360px;
       text-align: center;
-      color: white;
-      box-shadow: 8px 8px 0px rgba(0,0,0,0.8);
+      box-shadow: 8px 8px 0px #000;
     }
 
     .modal-title {
-      font-size: 1.4rem;
-      color: var(--label-yellow);
-      margin-bottom: 12px;
+      font-family: 'Fredoka', cursive;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .modal-price {
+      color: #cc0000;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .modal-desc {
+      font-size: 0.85rem;
+      color: #555;
+      margin-bottom: 20px;
+      line-height: 1.4;
     }
 
     .close-btn {
-      margin-top: 16px;
-      background: var(--label-yellow);
+      background: #ffd700;
       color: #000;
-      border: none;
-      padding: 8px 20px;
+      border: 2px solid #000;
+      padding: 8px 24px;
+      font-family: 'Fredoka', cursive;
       font-weight: bold;
       border-radius: 20px;
       cursor: pointer;
+      box-shadow: 2px 2px 0px #000;
+    }
+
+    /* 모바일 반응형 처리 */
+    @media (max-width: 600px) {
+      body {
+        flex-direction: column;
+      }
+      #sidebar {
+        width: 100%;
+        min-width: 100%;
+        border-right: none;
+        border-bottom: 2px solid #000;
+      }
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr); /* 모바일에서도 2열 유지 */
+        gap: 10px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="nav-btn">MENU</div>
-    <div class="logo">GOOD<br>GOODS</div>
-    <div class="nav-btn">CART <span id="cart-count">0</span></div>
-  </header>
+  <!-- 왼쪽 네오펫 스타일 사이드바 -->
+  <aside id="sidebar">
+    <div class="sidebar-header">GOODS MENU</div>
+    <ul class="sidebar-menu">
+      <li><span class="menu-icon">🏠</span> HOME</li>
+      <li><span class="menu-icon">🛍️️</span> SHOPS</li>
+      <li><span class="menu-icon">⭐</span> NEW ITEMS</li>
+      <li><span class="menu-icon">💬</span> CHAT</li>
+      <li><span class="menu-icon">❓</span> HELP</li>
+      <li><span class="menu-icon">🛒</span> CART (0)</li>
+    </ul>
 
-  <main id="canvas-container"></main>
+    <div class="sidebar-box">
+      <h4>★ Notice</h4>
+      <p>Welcome to GOOD GOODS shop! Click any item to view details.</p>
+    </div>
+  </aside>
 
-  <!-- 클릭 시 나타나는 카테고리 팝업 -->
+  <!-- 오른쪽 메인 콘텐츠 영역 -->
+  <main id="main-content">
+    
+    <!-- 네오펫 스타일 로고 -->
+    <div class="logo-container">
+      <span class="star-decor">★</span>
+      <h1 class="neopets-logo">GOOD GOODS</h1>
+      <span class="star-decor">★</span>
+      <p class="welcome-text">The greatest virtual goods shop on the internet!</p>
+    </div>
+
+    <!-- 2열 상품 목록 그리드 -->
+    <div class="product-grid" id="product-list"></div>
+
+  </main>
+
+  <!-- 상품 클릭 시 나타나는 팝업 -->
   <div class="modal-overlay" id="modal">
     <div class="modal-card">
-      <h2 class="modal-title" id="modal-category-name">CATEGORY</h2>
-      <p style="font-size: 0.9rem; color: #ccc; font-weight: normal; margin-bottom: 15px;">
-        해당 카테고리의 상품 페이지로 이동합니다.
-      </p>
-      <button class="close-btn" onclick="closeModal()">닫기</button>
+      <h2 class="modal-title" id="modal-item-name">PRODUCT NAME</h2>
+      <p class="modal-price" id="modal-item-price">0 NP</p>
+      <p class="modal-desc" id="modal-item-desc">상품 상세 설명이 여기에 들어갑니다.</p>
+      <button class="close-btn" onclick="closeModal()">CLOSE</button>
     </div>
   </div>
 
   <script>
     /* ========================================================
-       [새로 올릴 1, 2, 3, 4, 5 이미지 파일 설정]
-       - title: 각 카테고리 문구 (자유롭게 수정 가능)
-       - imgSrc: ./images/1.png 형태
+       [개별 상품 추가/수정하는 곳]
+       - name: 상품 이름
+       - price: 가격
+       - imgSrc: 이미지 파일 경로 (images/1.png 등)
+       - desc: 상세 설명
+       * 상품을 추가할 때마다 2열로 아래로 계속 늘어납니다!
     ======================================================== */
-    const ITEM_DATA = [
+    const PRODUCTS = [
       { 
         id: 1, 
-        title: 'CATEGORY 01',  
+        name: 'Vintage Alarm Clock',  
+        price: '12,000 NP',
         imgSrc: './images/1.png', 
-        x: 20, 
-        y: 25 
+        desc: '레트로 스타일의 클래식 알람 시계 피규어입니다.'
       },
       { 
         id: 2, 
-        title: 'CATEGORY 02',    
+        name: 'Fozzie Bear Figurine',    
+        price: '18,000 NP',
         imgSrc: './images/2.png', 
-        x: 65, 
-        y: 20 
+        desc: '귀여운 모자를 쓴 곰 캐릭터 토이 피규어입니다.'
       },
       { 
         id: 3, 
-        title: 'CATEGORY 03',    
+        name: 'Monster Toy',    
+        price: '15,000 NP',
         imgSrc: './images/3.png', 
-        x: 42, 
-        y: 45 
+        desc: '유니크한 컬러감의 컬렉터용 몬스터 장난감입니다.'
       },
       { 
         id: 4, 
-        title: 'CATEGORY 04',    
+        name: 'Skinny Alien',    
+        price: '21,000 NP',
         imgSrc: './images/4.png', 
-        x: 18, 
-        y: 65 
+        desc: '위트 있는 포즈의 레트로 에일리언 토이 피규어입니다.'
       },
       { 
         id: 5, 
-        title: 'CATEGORY 05',    
+        name: 'Bad Boy Figure',    
+        price: '25,000 NP',
         imgSrc: './images/5.png', 
-        x: 68, 
-        y: 62 
+        desc: '스트리트 감성의 유니크한 캐릭터 피규어입니다.'
       }
     ];
 
-    const container = document.getElementById('canvas-container');
-    let highestZIndex = 10;
+    const container = document.getElementById('product-list');
 
-    // 캐릭터 생성 및 화면 배치
-    ITEM_DATA.forEach(data => {
-      const item = document.createElement('div');
-      item.className = 'draggable-item';
-      
-      const posX = (window.innerWidth * data.x) / 100;
-      const posY = (window.innerHeight * data.y) / 100;
-      item.style.left = `${posX}px`;
-      item.style.top = `${posY}px`;
+    // 상품 카드 생성 및 배치
+    PRODUCTS.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'product-card';
+      card.onclick = () => openModal(item.name, item.price, item.desc);
 
-      item.innerHTML = `
-        <img class="character-img" src="${data.imgSrc}" alt="${data.title}" />
-        <div class="label-box">
-          <span class="label-text">${data.title}</span>
+      card.innerHTML = `
+        <div class="product-img-wrapper">
+          <img class="product-img" src="${item.imgSrc}" alt="${item.name}" />
         </div>
+        <div class="product-title">${item.name}</div>
+        <div class="product-price">${item.price}</div>
+        <button class="buy-btn">VIEW ITEM</button>
       `;
 
-      makeDraggableAndClickable(item, data.title);
-      container.appendChild(item);
+      container.appendChild(card);
     });
 
-    // 드래그 & 클릭 구분 로직
-    function makeDraggableAndClickable(element, title) {
-      let isDragging = false;
-      let startX, startY;
-      let initialLeft, initialTop;
-      let hasMoved = false;
-
-      function onStart(e) {
-        isDragging = true;
-        hasMoved = false;
-        
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-
-        startX = clientX;
-        startY = clientY;
-
-        initialLeft = element.offsetLeft;
-        initialTop = element.offsetTop;
-
-        highestZIndex++;
-        element.style.zIndex = highestZIndex;
-      }
-
-      function onMove(e) {
-        if (!isDragging) return;
-
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-
-        const deltaX = clientX - startX;
-        const deltaY = clientY - startY;
-
-        if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
-          hasMoved = true;
-        }
-
-        element.style.left = `${initialLeft + deltaX}px`;
-        element.style.top = `${initialTop + deltaY}px`;
-      }
-
-      function onEnd() {
-        if (!isDragging) return;
-        isDragging = false;
-
-        if (!hasMoved) {
-          openModal(title);
-        }
-      }
-
-      element.addEventListener('mousedown', onStart);
-      window.addEventListener('mousemove', onMove);
-      window.addEventListener('mouseup', onEnd);
-
-      element.addEventListener('touchstart', onStart, { passive: true });
-      window.addEventListener('touchmove', onMove, { passive: true });
-      window.addEventListener('touchend', onEnd);
-    }
-
-    function openModal(categoryTitle) {
-      document.getElementById('modal-category-name').innerText = categoryTitle;
+    // 상세 모달 열기/닫기
+    function openModal(name, price, desc) {
+      document.getElementById('modal-item-name').innerText = name;
+      document.getElementById('modal-item-price').innerText = price;
+      document.getElementById('modal-item-desc').innerText = desc;
       document.getElementById('modal').style.display = 'flex';
     }
 
