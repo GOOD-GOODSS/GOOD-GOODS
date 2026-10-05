@@ -1,0 +1,410 @@
+/* =========================================
+   메인 화면 전용 스타일 (index.html)
+   - 아이팟 클릭휠 + 가로 캐러셀 + 상품 모달
+========================================= */
+body.home {
+  padding: 0;
+  min-height: 0;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #fff;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --item: clamp(120px, 14vw, 210px);   /* 가운데 상품 크기 */
+  --wheel: clamp(104px, 9.3vw, 150px); /* 클릭휠 지름 */
+  --spring: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- 좌상단 로고 / 우상단 상품명 ---------- */
+.hud {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+body.hud-in .hud { opacity: 1; }
+body.modal-open .hud { opacity: 0; transition-duration: 0.2s; }
+
+.hud-logo {
+  position: absolute;
+  left: 14px;
+  top: 12px;
+  background: #000;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  padding: 5px 7px;
+  text-transform: uppercase;
+}
+
+.hud-title {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  max-width: 60vw;
+  text-align: right;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- 좌하단 INFO / 우하단 CART ---------- */
+.corner {
+  position: fixed;
+  bottom: 16px;
+  z-index: 100;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #000;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.corner-left { left: 14px; }
+.corner-right { right: 14px; }
+body.hud-in .corner { opacity: 1; }
+body.modal-open .corner { opacity: 0; pointer-events: none; transition-duration: 0.2s; }
+.corner:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- 캐러셀 ---------- */
+.stage {
+  position: fixed;
+  inset: 0;
+  --row-y: 50%;
+  overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: opacity 0.35s ease;
+}
+
+body.modal-open .stage {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.item {
+  position: absolute;
+  left: 50%;
+  top: var(--row-y);
+  width: var(--item);
+  height: var(--item);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  will-change: transform;
+  transform: translate(-50%, -50%);
+}
+
+.item:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 4px;
+}
+
+/* 인트로에서 얇은 사선 조각으로 시작해 펴지는 효과를 내는 안쪽 껍질 */
+.item-in {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: 100% 50%;
+  opacity: 0;
+}
+
+.item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+/* ---------- 클릭휠 ---------- */
+.wheel {
+  position: fixed;
+  left: 50%;
+  bottom: 10px;
+  width: var(--wheel);
+  height: var(--wheel);
+  margin-left: calc(var(--wheel) / -2);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 38%, #262626 0%, #1b1b1b 100%);
+  z-index: 700;
+  transform: translateY(140%);
+  transition:
+    transform 0.8s var(--spring),
+    width 0.5s var(--spring),
+    height 0.5s var(--spring),
+    margin-left 0.5s var(--spring),
+    border-radius 0.5s var(--spring),
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+body.wheel-in .wheel { transform: none; }
+
+.w-btn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #d8d8d8;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.25s ease, transform 0.4s var(--spring), left 0.5s var(--spring), right 0.5s var(--spring), width 0.5s var(--spring), height 0.5s var(--spring);
+}
+
+.w-btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: -2px;
+  border-radius: 8px;
+}
+
+.w-menu {
+  top: 9%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 7px 12px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.w-prev,
+.w-next {
+  top: 50%;
+  width: 30%;
+  height: 30%;
+  transform: translateY(-50%);
+}
+
+.w-prev { left: 4%; }
+.w-next { right: 4%; }
+
+.w-prev:hover,
+.w-next:hover,
+.w-menu:hover { color: #fff; }
+
+.w-center {
+  left: 50%;
+  top: 50%;
+  width: 38%;
+  height: 38%;
+  border-radius: 50%;
+  background: #343434;
+  box-shadow: 0 0 0 1px #111;
+  transform: translate(-50%, -50%);
+}
+
+.w-center:active { background: #404040; }
+
+.w-close {
+  left: 50%;
+  top: 50%;
+  width: 40px;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 모달이 열렸을 때: 알약 모양 */
+body.modal-open .wheel {
+  width: 150px;
+  height: 40px;
+  margin-left: -75px;
+  border-radius: 999px;
+  background: #343434;
+  box-shadow: 0 0 0 3px #1c1c1c;
+}
+
+body.modal-open .w-menu,
+body.modal-open .w-center {
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.modal-open .w-center { transform: translate(-50%, -50%) scale(0.4); }
+
+body.modal-open .w-close {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+body.modal-open .w-prev,
+body.modal-open .w-next {
+  width: 34%;
+  height: 100%;
+}
+
+body.modal-open .w-prev { left: 4%; }
+body.modal-open .w-next { right: 4%; }
+
+/* ---------- 상품 모달 ---------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 600;
+  visibility: hidden;
+  pointer-events: none;
+  transition: visibility 0s linear 0.55s;
+}
+
+body.modal-open .modal {
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+.m-card {
+  position: absolute;
+  left: 50%;
+  top: 4px;
+  bottom: 0;
+  width: clamp(340px, 37vw, 560px);
+  max-width: calc(100vw - 16px);
+  background: #ededed;
+  border-radius: 12px 12px 0 0;
+  padding: 24px 16px 96px;
+  overflow-y: auto;
+  transform: translate(-50%, 105%);
+  transition: transform 0.55s var(--spring);
+  outline: none;
+}
+
+body.modal-open .m-card { transform: translate(-50%, 0); }
+
+.m-inner { transition: opacity 0.14s ease; }
+.m-card.swap .m-inner { opacity: 0; }
+
+.m-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  margin: 2px 0 14px;
+}
+
+.m-media {
+  position: relative;
+  background: #fff;
+  border-radius: 4px;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.m-media img {
+  width: auto;
+  height: auto;
+  max-width: 86%;
+  max-height: 86%;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.m-media.loaded img { opacity: 1; }
+
+.m-more {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  z-index: 2;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: #ededed;
+  border: 0;
+  color: #777;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 9px 12px;
+  cursor: pointer;
+}
+
+.m-more:hover { color: #000; }
+
+.m-desc {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.97);
+  padding: 56px 18px 18px;
+  font-size: 12px;
+  line-height: 1.75;
+  color: #222;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.m-media.show-desc .m-desc { opacity: 1; }
+
+.m-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 14px 0 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.m-row select {
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  background: transparent;
+  border: 0;
+  padding: 4px 2px;
+  cursor: pointer;
+}
+
+.m-add {
+  width: 100%;
+  height: 40px;
+  background: #000;
+  color: #fff;
+  border: 0;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.m-add:hover { background: #222; }
+.m-add b { font-weight: 700; }
+
+/* ---------- 모바일 ---------- */
+@media (max-width: 700px) {
+  :root {
+    --item: clamp(110px, 34vw, 200px);
+    --wheel: 118px;
+  }
+  .m-card { width: min(92vw, 560px); }
+}
+
+/* ---------- 움직임 줄이기 설정 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .wheel, .w-btn, .m-card, .stage, .hud, .corner { transition-duration: 0.01s !important; }
+}
