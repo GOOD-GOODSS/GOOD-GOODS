@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — GOOD GOODS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo">GOOD GOODS</a>
+    <nav class="header-nav">
+      <a href="info.html" class="nav-link">INFO</a>
+      <a href="#" class="nav-link cart-btn" data-cart-toggle>CART (<span data-cart-count>0</span>)</a>
+    </nav>
+  </header>
+
+  <!-- 장바구니가 비어 있을 때 -->
+  <main class="done hidden" id="empty">
+    <h1>장바구니가 비어 있어요</h1>
+    <p>마음에 드는 상품을 먼저 담아 주세요.</p>
+    <a class="checkout-btn" href="index.html">쇼핑하러 가기</a>
+  </main>
+
+  <!-- 주문서 -->
+  <main class="checkout hidden" id="checkout">
+    <form id="order-form" novalidate>
+      <h1>Checkout</h1>
+
+      <div class="field">
+        <label for="name">이름</label>
+        <input id="name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="phone">연락처</label>
+        <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="010-0000-0000" required>
+      </div>
+      <div class="field">
+        <label for="email">이메일</label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="address">배송지 주소</label>
+        <input id="address" name="address" type="text" autocomplete="street-address" required>
+      </div>
+      <div class="field">
+        <label for="memo">배송 메모 (선택)</label>
+        <textarea id="memo" name="memo"></textarea>
+      </div>
+
+      <p class="notice hidden" id="form-error" style="color:#c00"></p>
+      <button class="checkout-btn" type="submit">PLACE ORDER</button>
+      <p class="notice">
+        지금은 주문 접수 화면만 있고 실제 결제는 연결되어 있지 않아요.
+        결제 연동(토스페이먼츠, 아임포트 등)은 따로 붙여야 합니다.
+      </p>
+    </form>
+
+    <aside class="summary" aria-label="주문 요약">
+      <h2 class="section-title">Order summary</h2>
+      <div id="summary-items"></div>
+      <div class="summary-row"><span>상품 금액</span><span id="sum-sub">₩0</span></div>
+      <div class="summary-row"><span>배송비</span><span>추후 안내</span></div>
+      <div class="summary-row total"><span>TOTAL</span><span id="sum-total">₩0</span></div>
+    </aside>
+  </main>
+
+  <!-- 접수 완료 -->
+  <main class="done hidden" id="done">
+    <h1>주문이 접수되었어요</h1>
+    <p><span id="done-name"></span>님, 감사합니다.</p>
+    <p>주문 내용을 확인한 뒤 입력하신 연락처로 안내드릴게요.</p>
+    <a class="checkout-btn" href="index.html">쇼핑 계속하기</a>
+  </main>
+
+  <footer>
+    <span>© GOOD GOODS</span>
+    <span>장난감 가게</span>
+  </footer>
+
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/checkout.js"></script>
+</body>
+</html>

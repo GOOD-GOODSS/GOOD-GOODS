@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GOOD GOODS — Official Store</title>
+  <title>Product — GOOD GOODS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -19,11 +19,23 @@
     </nav>
   </header>
 
-  <!-- 상품 그리드: js/main.js 가 products.js 의 목록으로 채워요 -->
-  <main class="shop-grid" id="product-grid"></main>
+  <a class="back-link" href="index.html">← BACK</a>
+
+  <!-- js/product.js 가 주소의 ?id= 값으로 채워요 -->
+  <main id="detail" class="detail"></main>
+
+  <section class="related" id="related" aria-label="다른 상품">
+    <h2 class="section-title">More goods</h2>
+    <div class="shop-grid" id="related-grid"></div>
+  </section>
+
+  <footer>
+    <span>© GOOD GOODS</span>
+    <span>장난감 가게</span>
+  </footer>
 
   <script src="js/products.js"></script>
   <script src="js/cart.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/product.js"></script>
 </body>
 </html>
