@@ -21,6 +21,7 @@
       color: #111111;
       padding: 30px 40px;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
     /* =========================================
@@ -31,6 +32,18 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+      animation: fadeInHeader 0.8s ease-out forwards;
+    }
+
+    @keyframes fadeInHeader {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .brand-logo {
@@ -78,6 +91,8 @@
       font-size: 0.75rem;
       color: #555;
       line-height: 1.8;
+      animation: fadeInHeader 0.8s ease-out 0.2s forwards;
+      opacity: 0;
     }
 
     .filter-row {
@@ -125,6 +140,23 @@
       gap: 35px 25px;
       align-items: center;
       justify-items: center;
+      perspective: 1000px; /* 입체 회오리 효과용 */
+    }
+
+    /* 회오리 모션 애니메이션 (Spiral Swirl & Scatter) */
+    @keyframes vortexSettle {
+      0% {
+        opacity: 0;
+        transform: translate(var(--twist-x), var(--twist-y)) scale(0) rotate(540deg);
+      }
+      60% {
+        opacity: 0.8;
+        transform: translate(calc(var(--twist-x) * 0.2), calc(var(--twist-y) * 0.2)) scale(1.15) rotate(-30deg);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1) rotate(0deg);
+      }
     }
 
     .grid-item {
@@ -135,17 +167,22 @@
       align-items: center;
       cursor: pointer;
       position: relative;
+
+      /* 초기 상태 및 애니메이션 적용 */
+      opacity: 0;
+      animation: vortexSettle 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
     }
 
     .grid-item img {
       max-width: 90%;
       max-height: 90%;
       object-fit: contain;
-      transition: transform 0.25s ease-out;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
     }
 
     .grid-item:hover img {
-      transform: scale(1.08);
+      transform: scale(1.15) translateY(-4px);
+      filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.15));
     }
 
     /* =========================================
@@ -159,12 +196,26 @@
       justify-content: center;
       align-items: center;
       z-index: 1000;
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
     }
 
     .modal-content {
       text-align: center;
       max-width: 400px;
       padding: 20px;
+      transform: scale(0.9);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
     }
 
     .modal-content img {
@@ -172,6 +223,7 @@
       max-height: 240px;
       object-fit: contain;
       margin-bottom: 20px;
+      filter: drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.12));
     }
 
     .modal-title {
@@ -274,10 +326,7 @@
 
   <script>
     /* ========================================================
-       [상품/오브젝트 목록 추가/수정하는 곳]
-       - name: 작품/상품 이름
-       - imgSrc: images/1.png 등 이미지 경로
-       - desc: 간단 설명
+       [상품/오브젝트 목록]
     ======================================================== */
     const ITEMS = [
       { id: 1, name: 'Vintage Alarm Clock', imgSrc: './images/1.png', desc: 'Object / Vintage Toy' },
@@ -289,27 +338,47 @@
 
     const container = document.getElementById('grid-container');
 
-    // 그리드 아이템 생성
-    ITEMS.forEach(item => {
+    // 회오리 위치 계산 및 소용돌이 진입 연출
+    ITEMS.forEach((item, index) => {
       const el = document.createElement('div');
       el.className = 'grid-item';
-      el.onclick = () => openModal(item.name, item.imgSrc, item.desc);
 
+      // 각 아이템마다 중앙 회오리에서의 무작위 출발 좌표 계산 (각도 & 거리를 회오리처럼 오프셋)
+      const angle = (index / ITEMS.length) * Math.PI * 4;
+      const radius = 180 + (index % 3) * 60;
+      const offsetX = Math.cos(angle) * radius;
+      const offsetY = Math.sin(angle) * radius;
+
+      // CSS 변수로 시작 회오리 좌표 전달
+      el.style.setProperty('--twist-x', `${offsetX}px`);
+      el.style.setProperty('--twist-y', `${offsetY}px`);
+
+      // 0.08초 간격으로 연속 회오리 출격
+      el.style.animationDelay = `${0.2 + index * 0.08}s`;
+
+      el.onclick = () => openModal(item.name, item.imgSrc, item.desc);
       el.innerHTML = `<img src="${item.imgSrc}" alt="${item.name}" />`;
       container.appendChild(el);
     });
 
     // 모달 컨트롤
+    const modal = document.getElementById('modal');
+
     function openModal(title, imgSrc, desc) {
       document.getElementById('modal-title').innerText = title;
       document.getElementById('modal-img').src = imgSrc;
       document.getElementById('modal-desc').innerText = desc;
-      document.getElementById('modal').style.display = 'flex';
+      modal.classList.add('active');
     }
 
     function closeModal() {
-      document.getElementById('modal').style.display = 'none';
+      modal.classList.remove('active');
     }
+
+    // 모달 배경 클릭 시 닫기
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
   </script>
 </body>
 </html>
