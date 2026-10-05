@@ -2,28 +2,69 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>GOOD GOODS — Official Store</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- style.css: 장바구니 드로어 등 공통 스타일 / home.css: 메인 화면 전용 -->
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/home.css">
 </head>
-<body>
+<body class="home">
 
-  <header>
-    <a href="index.html" class="logo">GOOD GOODS</a>
-    <nav class="header-nav">
-      <a href="info.html" class="nav-link">INFO</a>
-      <a href="#" class="nav-link cart-btn" data-cart-toggle>CART (<span data-cart-count>0</span>)</a>
-    </nav>
-  </header>
+  <!-- 좌상단 로고, 우상단 현재 상품명 -->
+  <div class="hud" aria-hidden="false">
+    <div class="hud-logo">GOOD GOODS</div>
+    <div class="hud-title" id="hud-title" aria-live="polite"></div>
+  </div>
 
-  <!-- 상품 그리드: js/main.js 가 products.js 의 목록으로 채워요 -->
-  <main class="shop-grid" id="product-grid"></main>
+  <!-- 좌하단 INFO, 우하단 CART -->
+  <a class="corner corner-left" href="info.html">INFO</a>
+  <a class="corner corner-right" href="#" data-cart-toggle>CART (<span data-cart-count>0</span>)</a>
+
+  <!-- 상품 캐러셀: js/home.js 가 상품을 채워요 -->
+  <main class="stage" id="stage" aria-label="상품 목록"></main>
+
+  <!-- 상품 상세 모달 -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="m-title" aria-hidden="true">
+    <div class="m-card" id="m-card" tabindex="-1">
+      <div class="m-inner">
+        <div class="m-title" id="m-title"></div>
+        <div class="m-media" id="m-media">
+          <button class="m-more" id="m-more" type="button" aria-expanded="false">MORE INFO <span id="m-more-sign">+</span></button>
+          <img id="m-img" alt="">
+          <div class="m-desc" id="m-desc"></div>
+        </div>
+        <div class="m-row">
+          <label for="m-qty">QTY</label>
+          <select id="m-qty">
+            <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+            <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+          </select>
+        </div>
+        <button class="m-add" id="m-add" type="button"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 클릭휠 (모달이 열리면 알약 모양으로 바뀌어요) -->
+  <div class="wheel" id="wheel">
+    <button class="w-btn w-menu" id="w-menu" type="button">MENU</button>
+    <button class="w-btn w-prev" id="w-prev" type="button" aria-label="이전 상품">
+      <svg viewBox="0 0 15 10" width="15" height="10" aria-hidden="true"><path d="M7 0v10L0 5zM14 0v10L7 5z" fill="currentColor"/></svg>
+    </button>
+    <button class="w-btn w-next" id="w-next" type="button" aria-label="다음 상품">
+      <svg viewBox="0 0 15 10" width="15" height="10" aria-hidden="true"><path d="M1 0v10l7-5zM8 0v10l7-5z" fill="currentColor"/></svg>
+    </button>
+    <button class="w-btn w-center" id="w-center" type="button" aria-label="상품 자세히 보기"></button>
+    <button class="w-btn w-close" id="w-close" type="button" aria-label="닫기">
+      <svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>
+    </button>
+  </div>
 
   <script src="js/products.js"></script>
   <script src="js/cart.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/home.js"></script>
 </body>
 </html>
