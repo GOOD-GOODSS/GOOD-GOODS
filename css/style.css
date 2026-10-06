@@ -38,11 +38,17 @@ header {
 }
 
 .logo {
-  font-size: 1.8rem;
-  font-weight: 700;
-  letter-spacing: -1px;
+  display: inline-block;
+  background: #000;
+  padding: 10px 16px;
+  line-height: 0;
   text-decoration: none;
-  color: #000;
+}
+
+.logo img {
+  display: block;
+  height: 30px;
+  width: auto;
 }
 
 .header-nav {
@@ -536,7 +542,8 @@ footer {
 @media (max-width: 600px) {
   body { padding: 20px; }
   header { margin-bottom: 40px; }
-  .logo { font-size: 1.4rem; }
+  .logo { padding: 8px 12px; }
+  .logo img { height: 24px; }
   .header-nav { gap: 18px; }
   .shop-grid { grid-template-columns: repeat(2, 1fr); gap: 30px 15px; }
   .related { margin-top: 70px; }

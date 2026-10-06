@@ -37,13 +37,14 @@ body.modal-open .hud { opacity: 0; transition-duration: 0.2s; }
   left: 14px;
   top: 12px;
   background: #000;
-  color: #fff;
-  font-size: 9px;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: 0.04em;
-  padding: 5px 7px;
-  text-transform: uppercase;
+  padding: 9px 13px;
+  line-height: 0;
+}
+
+.hud-logo img {
+  display: block;
+  height: 24px;
+  width: auto;
 }
 
 .hud-title {
@@ -410,6 +411,8 @@ body.modal-open .m-card { transform: translate(-50%, 0); }
     --item: clamp(150px, min(52vw, 34vh), 280px);
     --wheel: clamp(140px, min(42vw, 26vh), 180px);
   }
+  .hud-logo { left: 12px; top: 10px; padding: 8px 11px; }
+  .hud-logo img { height: 20px; }
   .m-card { width: min(92vw, 560px); }
 }
 
