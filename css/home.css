@@ -13,8 +13,9 @@ body.home {
 }
 
 :root {
-  --item: clamp(120px, 14vw, 210px);   /* 가운데 상품 크기 */
-  --wheel: clamp(104px, 9.3vw, 150px); /* 클릭휠 지름 */
+  --item: clamp(150px, min(20vw, 36vh), 300px);   /* 가운데 상품 크기 */
+  --wheel: clamp(140px, min(14vw, 28vh), 220px);  /* 클릭휠 지름 */
+  --wheel-bottom: clamp(32px, 7vh, 72px);         /* 클릭휠이 화면 아래에서 떨어진 거리 */
   --spring: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -137,7 +138,7 @@ body.modal-open .stage {
 .wheel {
   position: fixed;
   left: 50%;
-  bottom: 10px;
+  bottom: var(--wheel-bottom);
   width: var(--wheel);
   height: var(--wheel);
   margin-left: calc(var(--wheel) / -2);
@@ -147,6 +148,7 @@ body.modal-open .stage {
   transform: translateY(140%);
   transition:
     transform 0.8s var(--spring),
+    bottom 0.5s var(--spring),
     width 0.5s var(--spring),
     height 0.5s var(--spring),
     margin-left 0.5s var(--spring),
@@ -181,9 +183,15 @@ body.wheel-in .wheel { transform: none; }
   left: 50%;
   transform: translateX(-50%);
   padding: 7px 12px;
-  font-size: 9px;
+  font-size: clamp(10px, calc(var(--wheel) * 0.07), 14px);
   font-weight: 700;
   letter-spacing: 0.05em;
+}
+
+.w-prev svg,
+.w-next svg {
+  width: calc(var(--wheel) * 0.11);
+  height: auto;
 }
 
 .w-prev,
@@ -226,6 +234,7 @@ body.wheel-in .wheel { transform: none; }
 
 /* 모달이 열렸을 때: 알약 모양 */
 body.modal-open .wheel {
+  bottom: 18px;
   width: 150px;
   height: 40px;
   margin-left: -75px;
@@ -398,8 +407,8 @@ body.modal-open .m-card { transform: translate(-50%, 0); }
 /* ---------- 모바일 ---------- */
 @media (max-width: 700px) {
   :root {
-    --item: clamp(110px, 34vw, 200px);
-    --wheel: 118px;
+    --item: clamp(150px, min(52vw, 34vh), 280px);
+    --wheel: clamp(140px, min(42vw, 26vh), 180px);
   }
   .m-card { width: min(92vw, 560px); }
 }
