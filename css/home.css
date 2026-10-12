@@ -43,8 +43,8 @@ body.modal-open .hud { opacity: 0; transition-duration: 0.2s; }
 
 .hud-logo img {
   display: block;
-  height: 24px;
-  width: auto;
+  width: 118px;
+  height: auto;
 }
 
 .hud-title {
@@ -412,7 +412,7 @@ body.modal-open .m-card { transform: translate(-50%, 0); }
     --wheel: clamp(140px, min(42vw, 26vh), 180px);
   }
   .hud-logo { left: 12px; top: 10px; padding: 8px 11px; }
-  .hud-logo img { height: 20px; }
+  .hud-logo img { width: 96px; }
   .m-card { width: min(92vw, 560px); }
 }
 
