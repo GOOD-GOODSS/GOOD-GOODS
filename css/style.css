@@ -47,8 +47,8 @@ header {
 
 .logo img {
   display: block;
-  height: 30px;
-  width: auto;
+  width: 140px;
+  height: auto;
 }
 
 .header-nav {
@@ -543,7 +543,7 @@ footer {
   body { padding: 20px; }
   header { margin-bottom: 40px; }
   .logo { padding: 8px 12px; }
-  .logo img { height: 24px; }
+  .logo img { width: 112px; }
   .header-nav { gap: 18px; }
   .shop-grid { grid-template-columns: repeat(2, 1fr); gap: 30px 15px; }
   .related { margin-top: 70px; }
