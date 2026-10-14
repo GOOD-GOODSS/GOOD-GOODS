@@ -13,7 +13,7 @@ body.home {
 }
 
 :root {
-  --item: clamp(150px, min(20vw, 36vh), 300px);   /* 가운데 상품 크기 */
+  --item: clamp(200px, min(28vw, 45vh), 400px);   /* 가운데 상품 크기 */
   --wheel: clamp(140px, min(14vw, 28vh), 220px);  /* 클릭휠 지름 */
   --wheel-bottom: clamp(32px, 7vh, 72px);         /* 클릭휠이 화면 아래에서 떨어진 거리 */
   --spring: cubic-bezier(0.16, 1, 0.3, 1);
