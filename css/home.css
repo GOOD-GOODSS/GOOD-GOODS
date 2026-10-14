@@ -408,7 +408,8 @@ body.modal-open .m-card { transform: translate(-50%, 0); }
 /* ---------- 모바일 ---------- */
 @media (max-width: 700px) {
   :root {
-    --item: clamp(150px, min(52vw, 34vh), 280px);
+    /* 기존 180px~320px에서 원하는 만큼 숫자를 더 키워보세요 (예: 220px ~ 380px) */
+    --item: clamp(220px, min(68vw, 46vh), 380px); 
     --wheel: clamp(140px, min(42vw, 26vh), 180px);
   }
   .hud-logo { left: 12px; top: 10px; padding: 8px 11px; }
